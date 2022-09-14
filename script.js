@@ -29,6 +29,27 @@ const suggestions = document.getElementById("suggestions");
 const commentSection = document.getElementById("commentSection");
 
 let videos = [
+  
+  {
+    id: 0,
+    title: "tkhrbi9a",
+    thumbnail: "img/sausage.png",
+    src: "videos/sausage.mp4",
+    comments: [
+      {
+        id: generateID(),
+        username: "ErenJaegar",
+        logo: "https://i.pinimg.com/736x/ff/e3/b8/ffe3b86ba9f626d50a0be4cf4996e78f.jpg",
+        text: "The rumbling is coming.",
+      },
+      {
+        id: generateID(),
+        username: "YAAYGAA",
+        logo: "https://i.pinimg.com/736x/ff/e3/b8/ffe3b86ba9f626d50a0be4cf4996e78f.jpg",
+        text: "The RUUUUUUUMMM.",
+      },
+    ],
+  },
   {
     id: 1,
     title: "Sausage",
