@@ -4,27 +4,19 @@ const views = document.getElementById("views");
 const play = document.getElementById("play");
 const progress = document.getElementById("progress");
 const timestamp = document.getElementById("timestamp");
-const browse = document.getElementById("browse");
 const showModalBtn = document.getElementById("showBtn");
 const closeModalBtn = document.getElementById("closeBtn");
 const modal = document.getElementById("modal");
 const formSubmitBtn = document.getElementById("form-submit");
-const editModal = document.getElementById("editModal");
-const editedVideo = document.getElementById("editedVideo");
 const formEdit = document.getElementById("form-edit");
-const vidTitle = document.getElementById("vidTitle");
 const submitBtn = document.getElementById("submit-btn");
 const inputText = document.getElementById("input-text");
 const editCommentInput = document.getElementById("editCommentInput");
 const edit = document.getElementById("edit");
 const search = document.getElementById("search");
 const searchResults = document.getElementById("search-results");
-
 const videoFile = document.getElementById("video-file");
 const imageFile = document.getElementById("image-file");
-const suggestion = document.querySelectorAll(".suggestion");
-const editConfirmButton = document.getElementById("editConfirmBtn");
-const suggInfo = document.querySelectorAll(".sugg-info");
 const suggestions = document.getElementById("suggestions");
 const commentSection = document.getElementById("commentSection");
 
@@ -123,7 +115,6 @@ function init() {
   suggestions.innerHTML = "";
   commentSection.innerHTML = "";
 
-  // videos.forEach(showVideosDOM);
   videos.forEach((video) => showVideosDOM(video));
 }
 
@@ -182,11 +173,7 @@ function loadFirstVideo(id = 1) {
     `;
   });
   init();
-  // console.log("before commentSection, item", commentSection.innerHTML);
   commentSection.innerHTML = commentElements;
-  // console.log(commentElements);
-  // console.log("after commentSection, item", commentSection.innerHTML);
-  // console.log("commentSection", commentSection);
 }
 
 loadFirstVideo();
@@ -261,8 +248,8 @@ function readVideo(id) {
   const oGottenComment = oGottenVideo.comments;
   // console.log(oGottenComment);
   console.log(oGottenVideo.comments.length);
-  let commentElements = "";
   if (oGottenVideo.comments.length > 0) {
+    let commentElements = "";
     oGottenComment.forEach((comment, index) => {
       commentElements += `
   <div class="comment" id="comment_${comment.id}">
@@ -292,12 +279,9 @@ function readVideo(id) {
     </div>
     `;
     });
+    init();
+    commentSection.innerHTML = commentElements;
   }
-
-  init();
-  // console.log("before commentSection, item", commentSection);
-  commentSection.innerHTML = commentElements;
-  // console.log("after commentSection, item", commentSection);
 
   video.src = oGottenVideo.src;
   video.dataset.id = oGottenVideo.id;
