@@ -134,46 +134,13 @@ function loadFirstVideo(id = 1) {
   const deleteBtn = document.getElementById("deleteBtn_" + id);
   const oComment = document.getElementById("comment_" + id);
   const oGottenVideo = videos[i];
-  // console.log(oGottenVideo);
 
   video.dataset.id = oGottenVideo.id;
 
   const oGottenComment = oGottenVideo.comments;
-  // console.log(oGottenComment);
 
-  let commentElements = "";
-
-  oGottenComment.forEach((comment, index) => {
-    commentElements += `
-  <div class="comment" id="comment_${comment.id}">
-
-      <div class="logo">
-        <img width="70px" height="70px" src="${comment.logo}" alt="user">
-      </div>
-      <div class="name">
-        <h4>${comment.username}</h4>
-      </div>
-      <div class="text" id="text_${comment.id}">
-        <p>${comment.text}</p>
-      </div>
-      <div class="edit" id="edit" >
-      <div class="dots" id="dots_${comment.id}" onclick="showChoices(${comment.id})">
-      <i class="fa fa-ellipsis-v"></i>
-    </div>
-    <div class="choices" id="choices_${comment.id}">
-          <div class="editBtn" id="editBtn_${comment.id}" onclick="editCom(${comment.id})">
-            <i class='far fa-edit'> &nbsp &nbsp Edit</i>
-          </div>
-          <div class="deleteCom" id="deleteBtn_${comment.id}" onclick="deleteBtn(${comment.id})">
-          <i class='far fa-trash-alt'> &nbsp &nbsp Delete</i>
-          </div>
-        </div>
-      </div>
-    </div>
-    `;
-  });
   init();
-  commentSection.innerHTML = commentElements;
+  commentSection.innerHTML = createComments(oGottenComment);
 }
 
 loadFirstVideo();
@@ -240,47 +207,61 @@ function setVideoProgress() {
   video.currentTime = (+progress.value * video.duration) / 100;
 }
 
-// Play video when clicked
-function readVideo(id) {
-  const oGottenVideo = videos.find((vid) => vid.id === id);
-  // console.log(oGottenVideo);
+// Refactoring function
+function createComment(comment) {
+  return `
+<div class="comment" id="comment_${comment.id}">
 
-  const oGottenComment = oGottenVideo.comments;
-  // console.log(oGottenComment);
-  console.log(oGottenVideo.comments.length);
-  if (oGottenVideo.comments.length > 0) {
-    let commentElements = "";
-    oGottenComment.forEach((comment, index) => {
-      commentElements += `
-  <div class="comment" id="comment_${comment.id}">
-
-      <div class="logo">
-        <img width="70px" height="70px" src="${comment.logo}" alt="user">
+    <div class="logo">
+      <img width="70px" height="70px" src="${comment.logo}" alt="user">
+    </div>
+    <div class="name">
+      <h4>${comment.username}</h4>
+    </div>
+    <div class="text" id="text_${comment.id}">
+      <p>${comment.text}</p>
+    </div>
+    <div class="edit" id="edit" >
+      <div class="dots" id="dots_${comment.id}" onclick="showChoices(${comment.id})">
+        <i class="fa fa-ellipsis-v"></i>
       </div>
-      <div class="name">
-        <h4>${comment.username}</h4>
-      </div>
-      <div class="text" id="text_${comment.id}">
-        <p>${comment.text}</p>
-      </div>
-      <div class="edit" id="edit" >
-        <div class="dots" id="dots_${comment.id}" onclick="showChoices(${comment.id})">
-          <i class="fa fa-ellipsis-v"></i>
-        </div>
-        <div class="choices" id="choices_${comment.id}">
-        <div class="editBtn" id="editBtn_${comment.id}" onclick="editCom(${comment.id})">
-        <i class='far fa-edit'> &nbsp &nbsp Edit</i>
-      </div>
-      <div class="deleteCom" id="deleteBtn_${comment.id}" onclick="deleteBtn(${comment.id})">
-          <i class='far fa-trash-alt'> &nbsp &nbsp Delete</i>
-          </div>
+      <div class="choices" id="choices_${comment.id}">
+      <div class="editBtn" id="editBtn_${comment.id}" onclick="editCom(${comment.id})">
+      <i class='far fa-edit'> &nbsp &nbsp Edit</i>
+    </div>
+    <div class="deleteCom" id="deleteBtn_${comment.id}" onclick="deleteBtn(${comment.id})">
+        <i class='far fa-trash-alt'> &nbsp &nbsp Delete</i>
         </div>
       </div>
     </div>
-    `;
-    });
+  </div>
+  `;
+}
+
+// Refactoring
+
+/**
+ * @param {array} comments
+ * @return {string}
+ */
+
+function createComments(comments) {
+  let commentElements = "";
+  comments.forEach((comment, index) => {
+    commentElements += createComment(comment);
+  });
+  return commentElements;
+}
+
+// Play video when clicked
+function readVideo(id) {
+  const oGottenVideo = videos.find((vid) => vid.id === id);
+
+  const oGottenComment = oGottenVideo.comments;
+
+  if (oGottenVideo.comments.length > 0) {
     init();
-    commentSection.innerHTML = commentElements;
+    commentSection.innerHTML = createComments(oGottenComment);
   }
 
   video.src = oGottenVideo.src;
@@ -334,33 +315,7 @@ function addComments(e) {
     console.log(oGottenVideo);
     const newComment = document.createElement("div");
 
-    newComment.innerHTML = `
-    <div class="comment" id="comment_${uploadedComment.id}">
-  
-        <div class="logo">
-          <img width="70px" height="70px" src="${uploadedComment.logo}" alt="user">
-        </div>
-        <div class="name">
-          <h4>Guest</h4>
-        </div>
-        <div class="text" id="text_${uploadedComment.id}">
-          <p>${uploadedComment.text}</p>
-        </div>
-        <div class="edit" id="edit" >
-        <div class="dots" id="dots_${uploadedComment.id}" onclick="showChoices(${uploadedComment.id})">
-        <i class="fa fa-ellipsis-v"></i>
-      </div>
-      <div class="choices" id="choices_${uploadedComment.id}">
-      <div class="editBtn" id="editBtn_${uploadedComment.id}" onclick="editCom(${uploadedComment.id})">
-      <i class='far fa-edit'> &nbsp &nbsp Edit</i>
-    </div>
-    <div class="deleteCom" id="deleteBtn_${uploadedComment.id}" onclick="deleteBtn(${uploadedComment.id})">
-            <i class='far fa-trash-alt'> &nbsp &nbsp Delete</i>
-            </div>
-          </div>
-        </div>
-      </div>
-      `;
+    newComment.innerHTML = createComment(uploadedComment);
     inputText.value = "";
     commentSection.prepend(newComment);
   }
@@ -426,18 +381,7 @@ function removeVideo(id) {
   init();
 }
 
-//
 
-// Search for video
-// newArr = videos.map((vid) => {
-//   searchResults.innerHTML += `
-//   <div class="result" id="result_${vid.id}" onclick="readVideo(${vid.id})">
-//       <img src=${vid.thumbnail}>
-//       <h3>${vid.title}</h3>
-//     </div>
-//     `;
-
-// });
 search.addEventListener("input", (e) => {
   searchResults.innerHTML = "";
   const term = e.target.value.toUpperCase();
