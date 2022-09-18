@@ -290,8 +290,10 @@ function showChoices(id) {
 // Delete comment
 function deleteBtn(id) {
   const oComment = document.getElementById("comment_" + id);
-  console.log("oComment", oComment);
   oComment.remove();
+  const VidId = parseInt(video.dataset.id);
+  const oGottenVideo = videos.find((vid) => vid.id === VidId);
+  oGottenVideo.comments = oGottenVideo.comments.filter((com) => com.id !== id);
 }
 
 // Add a comment to DOM
@@ -308,11 +310,9 @@ function addComments(e) {
       text: inputText.value,
     };
 
-    console.log(video.dataset.id);
     let vidId = video.dataset.id;
     let oGottenVideo = videos.find((vid) => vid.id == vidId);
     oGottenVideo.comments.push(uploadedComment);
-    console.log(oGottenVideo);
     const newComment = document.createElement("div");
 
     newComment.innerHTML = createComment(uploadedComment);
@@ -320,6 +320,8 @@ function addComments(e) {
     commentSection.prepend(newComment);
   }
   submitBtn.classList.remove("show");
+  let vidId = video.dataset.id;
+
   const dots = document.getElementById("dots_" + vidId);
   const choices = document.getElementById("choices_" + vidId);
   const editBtn = document.getElementById("editBtn_" + vidId);
@@ -333,12 +335,10 @@ function editCom(id) {
   const VidId = parseInt(video.dataset.id);
   let oGottenCom = null;
   videos.forEach((vid) => {
-    console.log("vid.id === VidId", vid.id === VidId);
     if (vid.id === VidId) {
       oGottenCom = vid.comments.find((com) => com.id === id);
     }
   });
-  console.log("oGottenCom", oGottenCom);
 
   textDiv.innerHTML = `<input type="text" class="editCommentInput" id="editCommentInput_${id}" value="${oGottenCom.text}"/>
   <button class="confirmComEdit" id="confirmComEdit_${id}"  onclick="editCommentConfirm(${id})">Confirm</button>
@@ -354,7 +354,6 @@ function editCommentConfirm(id) {
 
   const VidId = parseInt(video.dataset.id);
   videos.forEach((vid, vidIndex) => {
-    console.log("vid.id === VidId", vid.id === VidId);
     if (vid.id === VidId) {
       vid.comments.forEach((com, comIndex) => {
         if (com.id === id) {
@@ -363,8 +362,6 @@ function editCommentConfirm(id) {
       });
     }
   });
-
-  // loadFirstVideo(VidId);
 
   textDiv.innerHTML = `<p>${editCommentInput.value}</p>`;
 
@@ -380,7 +377,6 @@ function removeVideo(id) {
 
   init();
 }
-
 
 search.addEventListener("input", (e) => {
   searchResults.innerHTML = "";
@@ -420,12 +416,9 @@ function showEditVideo(id) {
 
 // Confirm Edit Video
 function confirmEditVideo() {
-  console.log("videos", videos);
   let id = parseInt(modal.dataset.id);
-  console.log("id", id);
 
   let index = videos.findIndex((vid) => vid.id === id);
-  console.log("vidindex", videos[index], "index", index);
 
   const uploadedVideo = {
     ...videos[index],
@@ -444,7 +437,6 @@ function confirmEditVideo() {
         : `videos/${videoFile.files[0].name}`,
   };
   videos[index] = uploadedVideo;
-  console.log(uploadedVideo);
   init();
   resetModal();
 }
@@ -465,7 +457,6 @@ function uploadVideo() {
       src: `videos/${videoFile.files[0].name}`,
       comments: [],
     };
-    console.log(uploadedVideo);
     videos.unshift(uploadedVideo);
     showVideosDOM(uploadedVideo);
     resetModal();
