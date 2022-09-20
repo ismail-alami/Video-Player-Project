@@ -19,7 +19,8 @@
         <i class="fa fa-times"></i>
       </button>
       <div class="modal-header">
-        <h3>Edit video</h3>
+        <h3 id="edit-headline">Edit video</h3>
+        <h3 id="add-headline">Add video</h3>
       </div>
       <div class="modal-content">
         <form class="modal-form" enctype="multipart/form-data" action="/upload/image" method="post">
@@ -35,45 +36,14 @@
             <label for="file">Thumbnail</label>
             <input type="file" accept="image/*" id="image-file" class="form-input" />
           </div>
-          <p>*Re-upload the video and the thumbnail's source</p>
+          <p id="edit-condition">*Re-upload the video and the thumbnail's source</p>
+          
           <input type="button" value="Submit" class="form-submit" id="form-submit" />
           <input type="button" value="Edit" class="form-edit" id="form-edit" />
         </form>
       </div>
     </div>
   </div>
-  <!-- <div class="modal-container" id="editModal">
-    <div class="modal">
-      <button class="close-btn" id="closeEditBtn">
-        <i class="fa fa-times"></i>
-      </button>
-      <div class="modal-header">
-        <h3>Edit video</h3>
-      </div>
-      <div class="modal-content">
-        <p>Select a video from your local computer :</p>
-        <form class="modal-form" enctype="multipart/form-data" action="/upload/image" method="post">
-          <div>
-            <label for="title">Title</label>
-            <input type="text" id="editedTitle" placeholder="Enter the title of the video" class="form-input" />
-          </div>
-          <div>
-            <label for="file">Video file</label>
-            <input type="text" accept="video/*" id="editedVideo" class="form-input" />
-          </div>
-          <div>
-            <label for="file">Thumbnail</label>
-            <input type="text" accept="image/*" id="editedImg" class="form-input" />
-          </div>
-          <input type="button" value="Confirm" class="form-submit" id="editConfirmBtn" />
-        </form>
-      </div>
-    </div>
-  </div> -->
-
-
-
-
   <header>
     <h2>Next Youtube</h2>
     <div class="search">

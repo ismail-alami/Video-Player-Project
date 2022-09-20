@@ -19,6 +19,9 @@ const videoFile = document.getElementById("video-file");
 const imageFile = document.getElementById("image-file");
 const suggestions = document.getElementById("suggestions");
 const commentSection = document.getElementById("commentSection");
+const edit_headline = document.getElementById("edit-headline");
+const add_headline = document.getElementById("add-headline");
+const edit_condition = document.getElementById("edit-condition");
 
 let videos = [
   {
@@ -26,6 +29,7 @@ let videos = [
     title: "Sausage",
     thumbnail: "img/sausage.png",
     src: "videos/sausage.mp4",
+    views: 17523,
     comments: [
       {
         id: generateID(),
@@ -46,6 +50,7 @@ let videos = [
     title: "Kitty",
     thumbnail: "img/kitty.png",
     src: "videos/kitty.mp4",
+    views: 337523,
     comments: [
       {
         id: generateID(),
@@ -60,6 +65,7 @@ let videos = [
     title: "SEEED",
     thumbnail: "img/seeed.png",
     src: "videos/seed.mp4",
+    views: 915,
     comments: [
       {
         id: generateID(),
@@ -74,6 +80,7 @@ let videos = [
     title: "Try not to laugh",
     thumbnail: "img/trynot.png",
     src: "videos/trynot.mp4",
+    views: 22890,
     comments: [
       {
         id: generateID(),
@@ -103,6 +110,7 @@ function showVideosDOM(video) {
         </div>
         <div class="sugg-info" id="sugg-info">
           <h4>${video.title}</h4>
+          <h5>${video.views} views</h5>
         </div>
       </div>
   `;
@@ -110,11 +118,16 @@ function showVideosDOM(video) {
   suggestions.prepend(item);
 }
 
+// sort videos by views
+function sortByViews() {
+  videos.sort((a, b) => a.views - b.views);
+}
+
 // Init app
 function init() {
   suggestions.innerHTML = "";
   commentSection.innerHTML = "";
-
+  sortByViews();
   videos.forEach((video) => showVideosDOM(video));
 }
 
@@ -127,7 +140,7 @@ function loadFirstVideo(id = 1) {
   let i = videos.findIndex((vid) => vid.id === id);
   video.src = videos[i].src;
   title.innerText = videos[i].title;
-  views.innerText = `${Math.floor(Math.random() * 100000)} views`;
+  views.innerText = `${videos[i].views} views`;
   const dots = document.getElementById("dots_" + id);
   const choices = document.getElementById("choices_" + id);
   const editBtn = document.getElementById("editBtn_" + id);
@@ -268,7 +281,7 @@ function readVideo(id) {
   video.dataset.id = oGottenVideo.id;
   toggleVideoStatus();
   title.innerText = `${oGottenVideo.title}`;
-  views.innerHTML = `${Math.floor(Math.random() * 100000)} views`;
+  views.innerHTML = `${oGottenVideo.views} views`;
   const dots = document.getElementById("dots_" + id);
   const choices = document.getElementById("choices_" + id);
   const editBtn = document.getElementById("editBtn_" + id);
@@ -412,6 +425,9 @@ function showEditVideo(id) {
   formSubmitBtn.classList.remove("show");
 
   formEdit.classList.add("show");
+  edit_headline.classList.add("show");
+  add_headline.classList.remove("show");
+  edit_condition.classList.remove("hide");
 }
 
 // Confirm Edit Video
@@ -455,12 +471,14 @@ function uploadVideo() {
       title: vidTitle.value,
       thumbnail: `img/${imageFile.files[0].name}`,
       src: `videos/${videoFile.files[0].name}`,
+      views: 0,
       comments: [],
     };
     videos.unshift(uploadedVideo);
     showVideosDOM(uploadedVideo);
     resetModal();
   }
+  init();
 }
 
 // Generate random ID
@@ -494,6 +512,9 @@ showModalBtn.addEventListener("click", () => {
   videoFile.type = "file";
   formEdit.classList.remove("show");
   formSubmitBtn.classList.add("show");
+  edit_headline.classList.remove("show");
+  add_headline.classList.add("show");
+  edit_condition.classList.add("hide");
 });
 closeModalBtn.addEventListener("click", resetModal);
 formSubmitBtn.addEventListener("click", uploadVideo);

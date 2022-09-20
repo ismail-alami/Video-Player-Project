@@ -52,6 +52,25 @@ body {
   display: block;
 }
 
+#edit-headline{
+  display: none;
+}
+
+#edit-headline.show  {
+  display: block;
+}
+#add-headline{
+  display: none;
+}
+
+#add-headline.show  {
+  display: block;
+}
+
+#edit-condition.hide {
+  display: none;
+}
+
 .form-submit:hover {
   background-color: rgba(121, 121, 121, 0.404);
   color: black;
